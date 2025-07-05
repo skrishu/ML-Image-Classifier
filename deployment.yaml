@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-image-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ml-image-api
+  template:
+    metadata:
+      labels:
+        app: ml-image-api
+    spec:
+      containers:
+      - name: ml-image-api
+        image: <your-dockerhub-username>/ml-image-api:latest
+        ports:
+        - containerPort: 8000

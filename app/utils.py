@@ -1,9 +1,17 @@
 # app/utils.py
+
 import numpy as np
 from PIL import Image
 
 def preprocess_image(image: Image.Image) -> np.ndarray:
-    image = image.resize((28, 28))  # Resize to match training
+    # Resize to 8x8 like sklearn's digits dataset
+    image = image.resize((8, 8))
+
+    # Convert to numpy array
     image_array = np.array(image)
-    image_array = image_array.flatten() / 255.0  # Normalize
-    return image_array
+
+    # Normalize pixel values: sklearn's digits are in range 0–16
+    image_array = 16 - (image_array / 16)
+
+    # Flatten to match model input shape (1, 64)
+    return image_array.flatten()
