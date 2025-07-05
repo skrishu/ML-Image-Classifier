@@ -15,11 +15,16 @@ model = joblib.load("app/model.pkl")
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
-    contents = await file.read()
-    image = Image.open(io.BytesIO(contents)).convert("L")  # Grayscale
-    image_array = preprocess_image(image)
-    prediction = model.predict([image_array])[0]
-    return JSONResponse(content={"prediction": int(prediction)})
+    try:
+        contents = await file.read()
+        image = Image.open(io.BytesIO(contents)).convert("L")  # Grayscale
+        image_array = preprocess_image(image)
+        prediction = model.predict([image_array])[0]
+        return JSONResponse(content={"prediction": int(prediction)})
+    
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=400)
+
 
 if __name__ == "__main__":
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000)

@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: ml-image-api
-        image: <your-dockerhub-username>/ml-image-api:latest
+        image: KrishaHShah/ml-image-api:latest
         ports:
         - containerPort: 8000
